@@ -1,0 +1,89 @@
+body {
+  background-color: #ffe17b;
+}
+#container {
+  margin-top: 13vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 80%;
+}
+#testText {
+  margin-top: 10vh;
+  width: 80%;
+  height: 10vh;
+  background-color: #ff9b9b;
+  text-align: center;
+  font-size: 30px;
+}
+#testInput {
+  margin-top: 10vh;
+  width: 80%;
+  height: 10vh;
+  background-color: #cbffa9;
+  text-align: center;
+  font-size: 30px;
+}
+#companyLogo {
+  font-family: "Borel", cursive;
+  color: #c51605;
+  font-weight: bold;
+  font-size: 55px;
+  text-align: center;
+}
+p {
+  margin-top: 10vh;
+  font-weight: bold;
+  font-size: 27px;
+  text-align: center;
+  line-height: 2;
+}
+button {
+  margin-top: 10vh;
+  font-weight: bold;
+  font-size: 11px;
+  width: 40%;
+  height: 7vh;
+}
+h4 {
+  border-radius: 50%;
+  color: beige;
+  background-color: #ffeadd;
+  height: 20vh;
+  line-height: 20vh;
+  text-align: center;
+  margin-top: 10vh;
+  color: black;
+}
+
+#timer {
+  display: block;
+  line-height: 0;
+  color: black;
+}
+
+.footer {
+  text-align: center;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.footer .copyright {
+  margin-bottom: 10px;
+}
+
+.footer .social-icons {
+  margin-top: 10px;
+}
+
+.footer .social-icons a {
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.footer .social-icons img {
+  width: 30px;
+  height: 30px;
+}
