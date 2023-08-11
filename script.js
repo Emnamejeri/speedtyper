@@ -1,111 +1,191 @@
-let currentIndex = 0; // Variable to keep track of the current index in the text
+let currentIndex = 0;
 let isTimerRunning = false;
+let expectedText = "";
+let timerInterval;
 
-function displayText() {
-  let displayedText = document.getElementById("testText").textContent.trim(); // Get the text content and remove leading/trailing whitespaces
-  let userInput = document.getElementById("testInput").value.trim(); // Get the user input and remove leading/trailing whitespaces
-
-  if (displayedText === userInput) {
-    retrieveNextTextSection();
-  }
-}
-
-function retrieveNextTextSection() {
-  // Fetch the JSON file
+// To retrieve data from the JSON File
+function fetchContent() {
   fetch("content.json")
     .then((response) => response.json())
     .then((data) => {
-      const text = data.text;
-      const cleanText = text.join(" ");
-      const remainingText = cleanText.substring(currentIndex);
-
-      if (remainingText.length > 0) {
-        const newPhrase = remainingText.substring(0, 100);
-        currentIndex += 100; // Move the index to the next 100 characters
-
-        const textContainer = document.getElementById("testText");
-        textContainer.innerHTML = `<p>${newPhrase}</p>`;
-      } else {
-        
-        console.log("No more text to display.");
-      }
+      expectedText = data.text.join(" ");
+      updateDisplayedText();
     })
     .catch((error) => console.error("Error fetching JSON Data:", error));
 }
 
-//this function will start the countdown of 60 seconds
-function startCountdown(duration) {
-  const timerDisplay = document.getElementById("timer");
-  let timer = duration;
+//To update the text displayed to the user
+function updateDisplayedText() {
+  const textContainer = document.getElementById("testText");
+  const newPhrase = expectedText.substring(currentIndex, currentIndex + 100);
+  const formattedPhrase = newPhrase
+    .split("")
+    .map((char, index) => {
+      return `<span id="char${index}" class="char">${char}</span>`;
+    })
+    .join("");
+  textContainer.innerHTML = formattedPhrase;
+}
 
-  const countdownInterval = setInterval(function () {
-    if (--timer >= 0) {
-      timerDisplay.textContent = timer.toString().padStart(2, "0");
-    } else {
-      clearInterval(countdownInterval);
-      timerDisplay.textContent = "Time's up!";
-      timerDisplay.parentElement.textContent = timerDisplay.textContent;
-      disableUserInput();
+function displayTime() {
+  document.getElementById("actionStart").addEventListener("click", startTest);
+  document.getElementById("testInput").addEventListener("input", userInput);
+
+  window.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      startTest();
+    } else if (event.key === "Escape") {
+      resetTest();
+    }
+  });
+}
+
+function startTest() {
+  if (!isTimerRunning) {
+    isTimerRunning = true;
+    currentIndex = 0;
+    fetchContent();
+    startCountdown(60);
+    document.getElementById("testInput").disabled = false; // Enable user to enter their input
+    document.querySelector(".square-style").innerHTML = "";
+
+    // After 60 seconds, show the "Try again" button
+    setTimeout(() => {
+      addNewButton();
+    }, 60 * 1000);
+  }
+}
+
+function addNewButton() {
+  // Create a new button element
+  const newButton = document.createElement("button");
+  newButton.textContent = "Try again";
+  newButton.classList.add("time-remaining-box");
+  newButton.addEventListener("click", () => {
+    window.location.reload();
+  });
+
+  const buttonContainer = document.getElementsByClassName("buttonContainer")[0];
+  buttonContainer.appendChild(newButton);
+}
+
+// To reload the page and start over
+function resetTest() {
+  clearInterval(timerInterval);
+  isTimerRunning = false;
+  currentIndex = 0;
+  document.getElementById("testInput").value = "";
+  fetchContent();
+  document.getElementById("testInput").disabled = false;
+  document.querySelector(".square-style").innerHTML = "";
+}
+
+function updateTimerMessage(message) {
+  const timerblock = document.querySelector(".time-remaining-box");
+  timerblock.textContent = message;
+}
+
+// To start counter of 60 seconds
+function startCountdown(seconds) {
+  let remainingSeconds = seconds;
+  const timerElement = document.getElementById("timer");
+  timerElement.textContent = remainingSeconds;
+
+  timerInterval = setInterval(() => {
+    remainingSeconds--;
+    timerElement.textContent = remainingSeconds;
+
+    if (remainingSeconds <= 0) {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      calculateTypingSpeed();
+      document.getElementById("testInput").disabled = true; // Disable input
+      updateTimerMessage("Time's up!!!"); //display a time's up message
     }
   }, 1000);
-  isTimerRunning = true;
 }
-function disableUserInput() {
-  const userInputField = document.getElementById("testInput");
-  userInputField.disabled = true;
-  isTimerRunning = false;
-  startAgain();
-  displayStats();
+
+//To calculate user's typing speed and accuracy with comments
+function calculateTypingSpeed() {
+  const userInput = document.getElementById("testInput").value.trim();
+  let correctCharacters = 0;
+  let totalTypedCharacters = 0;
+
+  for (let i = 0; i < userInput.length; i++) {
+    const userChar = userInput[i];
+    const expectedChar = expectedText[currentIndex + i];
+
+    // Consider only valid user input characters (excluding backspaces)
+    if (userChar !== "") {
+      totalTypedCharacters++;
+
+      if (userChar === expectedChar) {
+        correctCharacters++;
+      }
+    }
+  }
+
+  const typingAccuracy = (correctCharacters / totalTypedCharacters) * 100;
+  const typingSpeedWPM = (totalTypedCharacters / 5) * 12;
+
+  // Determine the message based on user's typing speed
+  let message = "";
+  if (typingSpeedWPM <= 30) {
+    message = "You Type like a Turtle 🐢";
+  } else if (typingSpeedWPM <= 40) {
+    message = "You Type like a Grandma 👵🏼";
+  } else if (typingSpeedWPM <= 55) {
+    message = "You Type like a Programmer 👩🏻‍💻";
+  } else {
+    message = "Wow!!! You Type like a superhero 🦸🏻‍♀️";
+  }
+
+  displayResults(typingSpeedWPM, typingAccuracy, message);
+}
+
+function displayResults(typingSpeedWPM, typingAccuracy, message) {
+  const squareStyleElement = document.querySelector(".square-style");
+  squareStyleElement.innerHTML = `
+    <p> Your Typing Speed (WPM) is ${typingSpeedWPM}</p>
+    <p> Your Typing Accuracy is ${typingAccuracy.toFixed(0)}%</p>
+    <p>${message}</p>
+  `;
+  squareStyleElement.style.display = "block";
 }
 
 function userInput() {
-  const userInputField = document.getElementById("testInput");
   if (isTimerRunning) {
-    let userInput = userInputField.value.trim();
-    console.log("User input:", userInput);
-  }
-}
-function displayTime() {
-  document.getElementById("actionStart").addEventListener("click", function () {
-    startCountdown(60);
-    displayText();
-  });
-  document.getElementById("testInput").addEventListener("input", function () {
-    displayText();
-    userInput(); 
-  });
-}
-function startAgain() {
-  if (!isTimerRunning) {
-    function addNewButton() {
-      // Create a new button element
-      const newButton = document.createElement("button");
-      newButton.textContent = "Try again";
-      newButton.classList.add("time-remaining-box");
-      newButton.addEventListener("click", () => {
-        window.location.reload();
-      });
-      
-      const buttonContainer =
-        document.getElementsByClassName("buttonContainer")[0];
-      buttonContainer.appendChild(newButton);
+    const userInputField = document.getElementById("testInput");
+    const userInput = userInputField.value;
+    const displayedChars = document.querySelectorAll(".char");
+
+    for (let i = 0; i < displayedChars.length; i++) {
+      const char = displayedChars[i];
+      if (i < userInput.length) {
+        colorUpdate(char, userInput[i], expectedText[currentIndex + i]);
+      } else {
+        colorUpdate(char, "", expectedText[currentIndex + i]);
+      }
     }
 
-    addNewButton();
+    if (userInput.length >= 100) {
+      currentIndex += 100;
+      userInputField.value = "";
+      updateDisplayedText();
+    }
+    if (userInput.length >= expectedText.length && !isTimerRunning) {
+      calculateTypingSpeed();
+    }
   }
 }
 
-function displayStats() {
-  if (!isTimerRunning) {
-    function displaySpeedResults() {
-      const newSection = document.createElement("div");
-      newSection.textContent = "Your speed in WPM is: ";
-      newSection.classList.add("square-style");
-      const squareStyleElement = document.querySelector(".square-style");
-      squareStyleElement.appendChild(newSection);
-    }
-
-    displaySpeedResults();
+function colorUpdate(element, userChar, expectedChar) {
+  if (userChar === expectedChar) {
+    element.style.backgroundColor = "#1FAB89";
+  } else if (userChar === "") {
+    element.style.backgroundColor = "transparent";
+  } else {
+    element.style.backgroundColor = "#FF395E";
   }
 }
 
