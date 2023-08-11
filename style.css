@@ -6,7 +6,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #ffe17b;
+  background-color: #e8ffce;
 }
 
 .header {
@@ -17,7 +17,7 @@ body {
 
 #companyLogo {
   font-family: "Borel", cursive;
-  color: white;
+  color: #e8ffce;
   font-weight: bold;
   font-size: 48px;
 }
@@ -46,7 +46,7 @@ strong {
 
 button#actionStart {
   background-color: #c51605;
-  color: white;
+  color: #e8ffce;
   font-size: 18px;
   padding: 10px 20px;
   border: none;
@@ -57,7 +57,8 @@ button#actionStart {
 }
 
 button#actionStart:hover {
-  background-color: #b20c00;
+  background-color: #fccb8f;
+  color: black;
 }
 
 .typing-section {
@@ -75,7 +76,7 @@ button#actionStart:hover {
 }
 
 .test-text-box {
-  background-color: #ffc6ac;
+  background-color: #ffe4a7;
   padding: 10px;
   border-radius: 5px;
   height: 100px;
@@ -89,7 +90,7 @@ button#actionStart:hover {
 
 #testInput {
   width: 100%;
-  background-color: #cbffa9;
+  background-color: #ffe17b;
   font-size: 24px;
   text-align: center;
   padding: 10px;
@@ -100,19 +101,7 @@ button#actionStart:hover {
 
 .time-remaining-box {
   background-color: #c51605;
-  color: white;
-  font-size: 18px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom: 15px;
-}
-
-.square-style {
-  background-color: #d5d757;
-  color: white;
+  color: #e8ffce;
   font-size: 18px;
   padding: 10px 20px;
   border: none;
@@ -125,9 +114,24 @@ button#actionStart:hover {
 #timer {
   font-size: 28px;
 }
+.square-style {
+  display: none;
+  color: black;
+  font-size: 24px;
+  padding: 10px 20px;
+  background-color: #ffe4a7;
+  border-radius: 5%;
+  line-height: 2;
+  font-family: "Times New Roman", Times, serif;
+  border: none;
+  border-radius: 5px;
+  border: 2px black dotted;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
 
 footer {
-  background-color: #f0f0f0;
+  background-color: #ffe17b;
   padding: 10px;
   text-align: center;
 }
@@ -153,3 +157,4 @@ footer {
   color: #333;
   font-size: 24px;
 }
+
