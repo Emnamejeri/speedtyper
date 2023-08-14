@@ -18,7 +18,7 @@
   </head>
   <body>
     <header class="header">
-      <h1 id="companyLogo">TypeSpeed Tester</h1>
+      <h1 id="companyLogo">TypeSpeed Tester ⏱</h1>
     </header>
     <main class="main">
       <section class="intro-section">
@@ -28,13 +28,13 @@
           <br />
           Improve your typing <strong>Accuracy</strong> and
           <strong>Efficiency</strong> as you race against the clock to complete
-          engaging exercises.
+          <strong>Engaging</strong> exercises.
         </p>
       </section>
-      <button id="actionStart">Start Typing</button>
 
       <section class="typing-section">
         <div class="typing-container">
+          <button id="actionStart">Start Typing</button>
           <div class="test-text-box">
             <p id="testText"></p>
           </div>
@@ -49,11 +49,26 @@
         </div>
         <div class="buttonContainer"></div>
         <div class="square-style"></div>
+        <div class="results-container">
+          <table id="results-table" style="display: none">
+            <thead>
+              <tr>
+                <th>Attempt</th>
+                <th>Typing Speed (WPM)</th>
+                <th>Typing Accuracy (%)</th>
+              </tr>
+            </thead>
+            <tbody id="results-body">
+              <!-- User results will be added here -->
+            </tbody>
+          </table>
+          <h3 id="feedback-message">Good trying!</h3>
+        </div>
       </section>
     </main>
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2023 SpeedTyper. All rights reserved.</p>
+        <p>&copy; 2023 SpeedTyper -- All rights reserved.</p>
         <div id="social-icons">
           <a href="https://www.facebook.com/yourpage" target="_blank">
             <i class="fa-brands fa-facebook"></i>
