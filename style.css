@@ -86,6 +86,7 @@ button#actionStart:hover {
 #testText {
   font-size: 18px;
   text-align: center;
+  font-family: Raleway, "Times New Roman", Times, serif;
 }
 
 #testInput {
@@ -122,12 +123,47 @@ button#actionStart:hover {
   background-color: #ffe4a7;
   border-radius: 5%;
   line-height: 2;
-  font-family: "Times New Roman", Times, serif;
+  font-family: Raleway, "Times New Roman", Times, serif;
   border: none;
   border-radius: 5px;
   border: 2px black dotted;
   cursor: pointer;
   margin-bottom: 15px;
+}
+.results-container {
+  text-align: center;
+  margin-top: 30px;
+}
+
+#results-table {
+  border-collapse: collapse;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+#results-table th,
+#results-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+#results-table th {
+  background-color: #f2f2f2;
+}
+
+#feedback-message {
+  display: none;
+  font-size: 18px;
+  margin-top: 10px;
+  font-family: Raleway, "Times New Roman", Times, serif;
+}
+
+/* Media Query for Responsive Design */
+@media screen and (max-width: 768px) {
+  #results-table {
+    width: 90%;
+  }
 }
 
 footer {
@@ -157,4 +193,73 @@ footer {
   color: #333;
   font-size: 24px;
 }
+
+@media screen and (max-width: 480px) {
+  #companyLogo {
+    font-size: 32px;
+  }
+
+  .typing-container {
+    width: 95%;
+  }
+
+  .intro-section p,
+  .typing-section,
+  #testText,
+  #testInput {
+    font-size: 16px;
+  }
+
+  .time-remaining-box,
+  button#actionStart {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  #timer {
+    font-size: 24px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #social-icons {
+    margin-top: 10px;
+  }
+}
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .typing-container {
+    width: 90%;
+  }
+
+  #companyLogo {
+    font-size: 40px;
+  }
+
+  .intro-section p,
+  .typing-section {
+    font-size: 17px;
+  }
+
+  #results-table {
+    width: 85%;
+  }
+}
+@media screen and (min-width: 769px) {
+  .typing-container {
+    max-width: 1000px;
+  }
+
+  #results-table {
+    max-width: 1000px;
+  }
+
+  .footer-content {
+    max-width: 1000px;
+  }
+}
+
 
