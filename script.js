@@ -2,6 +2,7 @@ let currentIndex = 0;
 let isTimerRunning = false;
 let expectedText = "";
 let timerInterval;
+let testTimeout;
 let attemptNumber = 1; // Initialize attemptNumber
 let totalTypedCharacters = 0; // Global variable to store total characters typed by the user
 let totalCorrectCharacters = 0; // Global variable to store total correct characters typed by the user
@@ -25,6 +26,7 @@ function fetchContent() {
     .catch((error) => console.error("Error fetching JSON Data:", error));
 }
 
+//To display the text to the user
 function updateDisplayedText() {
   const newPhrase = expectedText.substring(currentIndex, currentIndex + 100);
   const formattedPhrase = newPhrase
@@ -48,6 +50,7 @@ function colorUpdate(element, userChar, expectedChar) {
 
 //To rest the testing session
 function resetTest() {
+  clearTimeout(testTimeout);
   clearInterval(timerInterval);
   isTimerRunning = false;
   currentIndex = 0;
@@ -75,10 +78,19 @@ function resetTest() {
 function setUpTestInteractions() {
   document.getElementById("actionStart").addEventListener("click", startTest);
   testInput.addEventListener("input", userInput);
+
+  //to reset the fields and timer once esc key is pressed
   window.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
       resetTest();
-      startCountdown(60);
+    }
+  });
+
+  //to restart the test once enter key is pressed
+  window.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      clearPreviousSession();
+      startTest();
     }
   });
   testInput.disabled = true;
@@ -94,6 +106,18 @@ function addNewButtonAndReload() {
   });
   buttonContainer.appendChild(newButton);
 }
+//to clear teh previous ongoing session
+function clearPreviousSession() {
+  clearTimeout(testTimeout);
+  clearInterval(timerInterval);
+  isTimerRunning = false;
+  currentIndex = 0;
+  totalTypedCharacters = 0;
+  totalCorrectCharacters = 0;
+  timerElement.textContent = "60";
+  testInput.value = "";
+  fetchContent();
+}
 
 //To start the test session and timer
 function startTest() {
@@ -105,7 +129,7 @@ function startTest() {
     testInput.disabled = false;
     squareStyleElement.innerHTML = "";
 
-    setTimeout(() => {
+    testTimeout = setTimeout(() => {
       addNewButtonAndReload();
     }, 60 * 1000);
   }
@@ -260,7 +284,7 @@ function compareAttempts() {
     const currentAttempt = attemptsData[attemptsData.length - 1];
     const previousAttempt = attemptsData[attemptsData.length - 2];
 
-    let improvementMessage = "Your Speed have improved! 🎉";
+    let improvementMessage = "Your Typing Speed have improved! 🎉";
     if (currentAttempt.speed < previousAttempt.speed) {
       improvementMessage = "You were faster before! 😟";
     } else if (currentAttempt.speed === previousAttempt.speed) {
